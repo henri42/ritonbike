@@ -18,7 +18,6 @@
 .footer {
   display: flex;
   flex: 1;
-  border: 2px solid blue;
   justify-content: center;
   align-items: center;
 }
