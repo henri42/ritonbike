@@ -1,0 +1,9 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.imageContainer {
+  width: 500px;
+  height: 500px;
+}

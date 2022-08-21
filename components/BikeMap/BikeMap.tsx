@@ -19,6 +19,7 @@ import { ReactNode, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
 import { builtinModules } from 'module'
+import { useRouter } from 'next/router'
 
 const homePoint: LatLngTuple = [46.167071701158854, 9.031604235079925]
 
@@ -57,6 +58,7 @@ type BikeMapProps = {
 
 type CheckpointProps = {
   center: LatLngTuple
+  postId: number
   children: ReactNode
 }
 
@@ -87,7 +89,8 @@ const StyledPopup = styled(Popup)`
   }
 `
 
-const Checkpoint = ({ center, children }: CheckpointProps) => {
+const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
+  const router = useRouter()
   const isDesktop = useMediaQuery({ query: '(min-width: 1224px)' })
   const [radius, setRadius] = useState(10)
 
@@ -102,6 +105,9 @@ const Checkpoint = ({ center, children }: CheckpointProps) => {
         },
         mouseout: () => {
           setRadius(10)
+        },
+        click: () => {
+          router.push('/posts/' + postId.toString())
         },
       }}
     >
@@ -140,7 +146,7 @@ const MapContent = ({ posts }: BikeMapProps) => {
               positions={points}
             />
             {zoom > 6 && (
-              <Checkpoint center={points[0]}>
+              <Checkpoint center={points[0]} postId={post.id}>
                 {isImagePresent && (
                   <Image src={post.coverImage} width={300} height={300} />
                 )}
