@@ -4,7 +4,6 @@ import {
   Polyline,
   CircleMarker,
   Popup,
-  useMapEvent,
   Tooltip,
 } from 'react-leaflet'
 import { LatLngTuple, PathOptions } from 'leaflet'
@@ -13,7 +12,9 @@ import styles from './BikeMap.module.css'
 import 'leaflet/dist/leaflet.css'
 
 import { Post } from '../../types/post'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import Image from 'next/image'
 
 const homePoint: LatLngTuple = [46.167071701158854, 9.031604235079925]
 
@@ -37,11 +38,12 @@ type BikeMapProps = {
 
 type CheckpointProps = {
   center: LatLngTuple
-  title: string
+  children: ReactNode
 }
 
-const Checkpoint = ({ center, title }: CheckpointProps) => {
+const Checkpoint = ({ center, children }: CheckpointProps) => {
   const [radius, setRadius] = useState(5)
+  const isDesktop = useMediaQuery({ query: '(min-width: 1224px)' })
   return (
     <CircleMarker
       center={center}
@@ -56,9 +58,11 @@ const Checkpoint = ({ center, title }: CheckpointProps) => {
         },
       }}
     >
-      <Popup className={styles.popup}>
-        <div className={styles.funny}>{title}</div>
-      </Popup>
+      {!isDesktop ? (
+        <Popup className={styles.popup}>{children}</Popup>
+      ) : (
+        <Tooltip>{children}</Tooltip>
+      )}
     </CircleMarker>
   )
 }
@@ -74,6 +78,7 @@ const BikeMap = ({ posts }: BikeMapProps) => {
       <TileLayer url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.png" />
       {posts.map((post) => {
         const points = getPoints(post)
+        const isImagePresent = post.coverImage !== ''
         return (
           <div key={post.id}>
             <Polyline
@@ -81,7 +86,12 @@ const BikeMap = ({ posts }: BikeMapProps) => {
               smoothFactor={4}
               positions={points}
             />
-            <Checkpoint center={points[0]} title={post.title} />
+            <Checkpoint center={points[0]}>
+              {post.title}
+              {isImagePresent && (
+                <Image src={post.coverImage} width={300} height={300} />
+              )}
+            </Checkpoint>
           </div>
         )
       })}

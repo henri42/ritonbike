@@ -7,7 +7,7 @@ export type Point = {
 
 export type Post = {
   content: string
-  coverImage?: string
+  coverImage: string
   created: string
   id: number
   title: string

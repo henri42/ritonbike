@@ -13,8 +13,19 @@ export const getStaticProps: GetStaticProps = async () => {
   const posts: Post[] = await res.json()
   const postsPromises = posts.map(async (p) => {
     const res = await fetch('http://localhost:5000/api/posts/' + p.id)
-    const post: Post = await res.json()
-    return post
+    const post = await res.json()
+    const postObject: Post = {
+      content: post.content,
+      title: post.title,
+      coverImage:
+        post.cover_image !== undefined
+          ? process.env.BACK_END_URL + post.cover_image
+          : '',
+      points: post.points || [],
+      created: post.created,
+      id: post.id,
+    }
+    return postObject
   })
 
   const fullPosts = await Promise.all(postsPromises)
