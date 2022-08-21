@@ -6,14 +6,14 @@ import { SVGProps } from 'react'
 import styles from '../../styles/Post.module.css'
 import Link from 'next/link'
 import { ChartIcon, ListIcon, MapIcon } from '../../components/Icons/Icons'
+import { fetchAllPosts, fetchPost } from '../../lib/post'
 
 type Props = {
   postData: Post
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch('http://localhost:5000/api/posts')
-  const posts: Post[] = await res.json()
+  const posts = await fetchAllPosts()
   const idList = posts.map((post) => {
     return {
       params: {
@@ -28,19 +28,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const res = await fetch('http://localhost:5000/api/posts/' + params?.id)
-  const post = await res.json()
-  const postData: Post = {
-    content: post.content,
-    title: post.title,
-    coverImage:
-      post.cover_image !== undefined
-        ? process.env.BACK_END_URL + post.cover_image
-        : '',
-    points: post.points || [],
-    created: post.created,
-    id: post.id,
-  }
+  const postId = params ? params.id as string : 1
+  const postData = await fetchPost(postId)
   return {
     props: {
       postData,

@@ -68,3 +68,23 @@
 .navLink span {
   margin: 0 0.3rem;
 }
+
+
+@media (prefers-color-scheme: dark) {
+  .navLink {
+    -webkit-box-shadow: 0px 0px 0px 1px white;
+    -moz-box-shadow: 0px 0px 0px 1px white;
+    box-shadow: 0px 0px 0px 1px white;
+    color: white;
+  }
+  
+  .navLink:hover {
+    -webkit-box-shadow: 0px 0px 0px 3px white;
+    -moz-box-shadow: 0px 0px 0px 3px white;
+    box-shadow: 0px 0px 0px 3px white;
+  }
+
+  .navLink svg {
+    filter: invert(100%);
+  }
+}

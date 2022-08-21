@@ -3,31 +3,15 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
 import type { Post } from '../types/post'
+import { fetchAllPosts, fetchPost } from '../lib/post'
 
 const MapWithNoSSR = dynamic(() => import('../components/BikeMap/BikeMap'), {
   ssr: false,
 })
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch('http://localhost:5000/api/posts')
-  const posts: Post[] = await res.json()
-  const postsPromises = posts.map(async (p) => {
-    const res = await fetch('http://localhost:5000/api/posts/' + p.id)
-    const post = await res.json()
-    const postObject: Post = {
-      content: post.content,
-      title: post.title,
-      coverImage:
-        post.cover_image !== undefined
-          ? process.env.BACK_END_URL + post.cover_image
-          : '',
-      points: post.points || [],
-      created: post.created,
-      id: post.id,
-    }
-    return postObject
-  })
-
+  const posts= await fetchAllPosts()
+  const postsPromises = posts.map(async (p) => fetchPost(p.id))
   const fullPosts = await Promise.all(postsPromises)
 
   return {
