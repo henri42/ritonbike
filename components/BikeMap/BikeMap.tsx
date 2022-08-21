@@ -5,10 +5,10 @@ import {
   CircleMarker,
   Popup,
   Tooltip,
-  useMap,
   useMapEvent,
+  Marker,
 } from 'react-leaflet'
-import { LatLngTuple, PathOptions, Point } from 'leaflet'
+import { Icon, LatLngTuple, PathOptions, Point } from 'leaflet'
 
 import styled from 'styled-components'
 import styles from './BikeMap.module.css'
@@ -18,10 +18,7 @@ import { Post } from '../../types/post'
 import { ReactNode, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
-import { builtinModules } from 'module'
 import { useRouter } from 'next/router'
-
-const homePoint: LatLngTuple = [46.167071701158854, 9.031604235079925]
 
 const getPoints = (post: Post) => {
   const points =
@@ -52,6 +49,11 @@ const markerDesktopOptions: PathOptions = {
   opacity: 0,
 }
 
+type MapContentProps = {
+  posts: Post[],
+  lastPoint: LatLngTuple
+}
+
 type BikeMapProps = {
   posts: Post[]
 }
@@ -62,24 +64,18 @@ type CheckpointProps = {
   children: ReactNode
 }
 
-const StyledTooltip = styled(Tooltip)`
-  display: flex;
-  flex-direction: column;
-  img {
-    border-radius: 3px;
-  }
-`
-
 const StyledPopup = styled(Popup)`
   display: flex;
   flex-direction: column;
-  img {
-    border-radius: 3px;
-    position: relative;
-  }
   .leaflet-popup-content-wrapper {
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.05s ease-in-out;
+    cursor: pointer;
+    &:active {
+      box-shadow: 0 1 3px rgba(0, 0, 0, 0.2);
+      transform: scale(98%);
+    }
   }
   .leaflet-popup-content {
     margin: 0.3rem;
@@ -107,26 +103,29 @@ const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
           setRadius(10)
         },
         click: () => {
-          router.push('/posts/' + postId.toString())
+          if (isDesktop) router.push('/posts/' + postId.toString())
         },
       }}
     >
       {!isDesktop ? (
-        <StyledPopup
-          closeButton={false}
-          offset={new Point(0, 2)}
-          className={styles.popup}
-        >
+        <StyledPopup closeButton={false} offset={new Point(0, 2)}>
           {children}
         </StyledPopup>
       ) : (
-        <StyledTooltip>{children}</StyledTooltip>
+        <Tooltip opacity={1}>{children}</Tooltip>
       )}
     </CircleMarker>
   )
 }
 
-const MapContent = ({ posts }: BikeMapProps) => {
+const MapContent = ({ posts, lastPoint }: MapContentProps) => {
+  const router = useRouter()
+
+  const lastPointIcon = new Icon({
+    iconUrl: '/biker-red-line.gif',
+    iconAnchor: [-5, 17]
+  })
+
   const [zoom, setZoom] = useState(initialZoom)
   const map = useMapEvent('zoom', () => {
     setZoom(map.getZoom())
@@ -147,15 +146,21 @@ const MapContent = ({ posts }: BikeMapProps) => {
             />
             {zoom > 6 && (
               <Checkpoint center={points[0]} postId={post.id}>
-                {isImagePresent && (
-                  <Image src={post.coverImage} width={300} height={300} />
-                )}
-                {post.title}
+                <div
+                  className={styles.markerContent}
+                  onClick={() => router.push('/posts/' + post.id.toString())}
+                >
+                  {isImagePresent && (
+                    <Image src={post.coverImage} width={300} height={300} />
+                  )}
+                  {post.title}
+                </div>
               </Checkpoint>
             )}
           </div>
         )
       })}
+      <Marker position={lastPoint} icon={lastPointIcon} />
     </div>
   )
 }
@@ -163,14 +168,19 @@ const MapContent = ({ posts }: BikeMapProps) => {
 const BikeMap = ({ posts }: BikeMapProps) => {
   const firstPostPoints = posts[0].points || []
   const firstPoint = firstPostPoints[0]
+
+  const lastPostPoints = getPoints(posts[posts.length - 1])
+  const lastPoint = lastPostPoints[lastPostPoints.length - 1]
+
+
   return (
     <MapContainer
       className={styles.map}
-      center={firstPoint}
+      center={lastPoint}
       zoom={initialZoom}
       scrollWheelZoom={false}
     >
-      <MapContent posts={posts} />
+      <MapContent posts={posts} lastPoint={lastPoint} />
     </MapContainer>
   )
 }

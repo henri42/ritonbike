@@ -1,9 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import type { Post } from '../../types/post'
+import { SVGProps } from 'react'
 
 import styles from '../../styles/Post.module.css'
 import Link from 'next/link'
+import { ChartIcon, ListIcon, MapIcon } from '../../components/Icons/Icons'
 
 type Props = {
   postData: Post
@@ -47,14 +49,46 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 const Post = ({ postData }: Props) => {
+  const mapLink = (
+    <a className={styles.navLink}>
+      <MapIcon />
+      <span>Carte</span>
+    </a>
+  )
+  const listLink = (
+    <a className={styles.navLink}>
+      <ListIcon />
+      <span>Liste</span>
+    </a>
+  )
+  const statsLink = (
+    <a className={styles.navLink}>
+      <ChartIcon />
+      <span>Stats</span>
+    </a>
+  )
+
   return (
     <div className={styles.root}>
-      <div className={styles.imageContainer}>
-        <Image src={postData.coverImage} width={500} height={500} />
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <Image
+            src={postData.coverImage}
+            layout="responsive"
+            width={500}
+            height={500}
+          />
+        </div>
+        <h1>{postData.title}</h1>
+        <p>{postData.content}</p>
+        <footer>
+          <nav>
+            <Link href="/">{mapLink}</Link>
+            <Link href="/list">{listLink}</Link>
+            <Link href="/stats">{statsLink}</Link>
+          </nav>
+        </footer>
       </div>
-      <h1>{postData.title}</h1>
-      <p>{postData.content}</p>
-      <Link href="/">Go Home</Link>
     </div>
   )
 }
