@@ -18,11 +18,10 @@ type Props = {
 }
 
 const List = ({ posts }: Props) => {
-
   return (
     <div className={styles.root}>
       <div className={styles.container}>
-        {posts.map(p => (
+        {posts.map((p) => (
           <div key={p.id}>
             <h3>{p.title}</h3>
           </div>

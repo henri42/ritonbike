@@ -10,7 +10,7 @@ const MapWithNoSSR = dynamic(() => import('../components/BikeMap/BikeMap'), {
 })
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts= await fetchAllPosts()
+  const posts = await fetchAllPosts()
   const postsPromises = posts.map(async (p) => fetchPost(p.id))
   const fullPosts = await Promise.all(postsPromises)
 

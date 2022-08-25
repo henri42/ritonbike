@@ -46,7 +46,7 @@
   -moz-box-shadow: 0px 0px 0px 1px black;
   box-shadow: 0px 0px 0px 1px black;
 
-  transition: box-shadow .1s ease-in-out;
+  transition: box-shadow 0.1s ease-in-out;
 
   display: flex;
   align-items: center;
@@ -55,20 +55,18 @@
   color: black;
   margin: 3px;
   border-radius: 5px;
-  padding: .3rem;
+  padding: 0.3rem;
 }
 
 .navLink:hover {
   -webkit-box-shadow: 0px 0px 0px 3px black;
   -moz-box-shadow: 0px 0px 0px 3px black;
   box-shadow: 0px 0px 0px 3px black;
-
 }
 
 .navLink span {
   margin: 0 0.3rem;
 }
-
 
 @media (prefers-color-scheme: dark) {
   .navLink {
@@ -77,7 +75,7 @@
     box-shadow: 0px 0px 0px 1px white;
     color: white;
   }
-  
+
   .navLink:hover {
     -webkit-box-shadow: 0px 0px 0px 3px white;
     -moz-box-shadow: 0px 0px 0px 3px white;

@@ -50,7 +50,7 @@ const markerDesktopOptions: PathOptions = {
 }
 
 type MapContentProps = {
-  posts: Post[],
+  posts: Post[]
   lastPoint: LatLngTuple
 }
 
@@ -123,7 +123,7 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
 
   const lastPointIcon = new Icon({
     iconUrl: '/biker-red-line.gif',
-    iconAnchor: [-5, 17]
+    iconAnchor: [-5, 17],
   })
 
   const [zoom, setZoom] = useState(initialZoom)
@@ -171,7 +171,6 @@ const BikeMap = ({ posts }: BikeMapProps) => {
 
   const lastPostPoints = getPoints(posts[posts.length - 1])
   const lastPoint = lastPostPoints[lastPostPoints.length - 1]
-
 
   return (
     <MapContainer

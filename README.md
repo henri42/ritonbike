@@ -10,24 +10,27 @@ Ritonbike offers you the following features:
 - Blog articles
 - Travel Stats
 - CMS interface
-- REST API 
+- REST API
 
 This repository is the Front page of the blog.
 
 ## Getting Started
 
 Clone the project
+
 ```
 git clone git@github.com:henri42/ritonbike.git
 ```
 
 Install dependencies
+
 ```
 cd ritonbike
 yarn
 ```
 
 Run development server
+
 ```
 yarn dev
 ```
