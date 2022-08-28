@@ -60,23 +60,23 @@ const Post = ({ postData }: Props) => {
 
   return (
     <Layout container subtitle={postData.title}>
-        <div className={styles.imageContainer}>
-          <Image
-            src={postData.coverImage}
-            layout="responsive"
-            width={500}
-            height={500}
-          />
-        </div>
-        <h1>{postData.title}</h1>
-        <p className={styles.content}>{postData.content}</p>
-        <footer className={styles.footer}>
-          <nav className={styles.nav}> 
-            <Link href="/">{mapLink}</Link>
-            <Link href="/list">{listLink}</Link>
-            <Link href="/stats">{statsLink}</Link>
-          </nav>
-        </footer>
+      <div className={styles.imageContainer}>
+        <Image
+          src={postData.coverImage}
+          layout="responsive"
+          width={500}
+          height={500}
+        />
+      </div>
+      <h1>{postData.title}</h1>
+      <p className={styles.content}>{postData.content}</p>
+      <footer className={styles.footer}>
+        <nav className={styles.nav}>
+          <Link href="/">{mapLink}</Link>
+          <Link href="/list">{listLink}</Link>
+          <Link href="/stats">{statsLink}</Link>
+        </nav>
+      </footer>
     </Layout>
   )
 }

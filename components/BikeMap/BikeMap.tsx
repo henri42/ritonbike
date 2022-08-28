@@ -7,15 +7,16 @@ import {
   Tooltip,
   useMapEvent,
   Marker,
+  FeatureGroup
 } from 'react-leaflet'
-import { Icon, LatLngTuple, PathOptions, Point } from 'leaflet'
+import { Icon, LatLngTuple , PathOptions, Point, FeatureGroup as LeafletFeatureGroup } from 'leaflet'
 
 import styled from 'styled-components'
 import styles from './BikeMap.module.css'
 import 'leaflet/dist/leaflet.css'
 
 import { Post } from '../../types/post'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -29,22 +30,24 @@ const getPoints = (post: Post) => {
 }
 
 const initialZoom = 7
+const routeColor = '#1fe885'
 
-const pathOptions: PathOptions = {
-  color: 'red',
-  weight: 6,
+const routeOptions: PathOptions = {
+  color: routeColor,
+  dashArray: '2 6',
+  weight: 4,
   fillOpacity: 1,
 }
 
 const markerMobileOptions: PathOptions = {
   weight: 30,
-  fillColor: 'red',
+  fillColor: routeColor,
   fillOpacity: 1,
   opacity: 0,
 }
 
 const markerDesktopOptions: PathOptions = {
-  fillColor: 'red',
+  fillColor: routeColor,
   fillOpacity: 1,
   opacity: 0,
 }
@@ -88,7 +91,7 @@ const StyledPopup = styled(Popup)`
 const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
   const router = useRouter()
   const isDesktop = useMediaQuery({ query: '(min-width: 1224px)' })
-  const [radius, setRadius] = useState(10)
+  const [radius, setRadius] = useState(6)
 
   return (
     <CircleMarker
@@ -97,10 +100,10 @@ const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
       radius={radius}
       eventHandlers={{
         mouseover: () => {
-          setRadius(13)
+          setRadius(8)
         },
         mouseout: () => {
-          setRadius(10)
+          setRadius(6)
         },
         click: () => {
           if (isDesktop) router.push('/posts/' + postId.toString())
@@ -122,60 +125,72 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
   const router = useRouter()
 
   const lastPointIcon = new Icon({
-    iconUrl: '/biker-red-line.gif',
+    iconUrl: '/biker-green.gif',
     iconAnchor: [-5, 17],
   })
 
   const [zoom, setZoom] = useState(initialZoom)
-  const map = useMapEvent('zoom', () => {
-    setZoom(map.getZoom())
+  const mapEvent = useMapEvent('zoom', () => {
+    setZoom(mapEvent.getZoom())
   })
+
+  const groupRef = useRef<LeafletFeatureGroup>(null)
+
+  const handleZoomFit = () => {
+    if (groupRef.current != null) {
+      const bounds = groupRef.current.getBounds()
+      mapEvent.fitBounds(bounds)
+    }
+  }
+
+  useEffect(() => {
+    handleZoomFit()
+  }, [])
 
   return (
     <div className={styles.mapContent}>
       <TileLayer url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.png" />
-      {posts.map((post) => {
-        const points = getPoints(post)
-        const isImagePresent = post.coverImage !== ''
-        return (
-          <div key={post.id}>
-            <Polyline
-              pathOptions={pathOptions}
-              smoothFactor={4}
-              positions={points}
-            />
-            {zoom > 6 && (
-              <Checkpoint center={points[0]} postId={post.id}>
-                <div
-                  className={styles.markerContent}
-                  onClick={() => router.push('/posts/' + post.id.toString())}
-                >
-                  {isImagePresent && (
-                    <Image src={post.coverImage} width={300} height={300} />
-                  )}
-                  {post.title}
-                </div>
-              </Checkpoint>
-            )}
-          </div>
-        )
-      })}
-      <Marker position={lastPoint} icon={lastPointIcon} />
+      <FeatureGroup ref={groupRef}>
+        {posts.map((post) => {
+          const points = getPoints(post)
+          const isImagePresent = post.coverImage !== ''
+          return (
+            <div key={post.id}>
+              <Polyline
+                pathOptions={routeOptions}
+                smoothFactor={4}
+                positions={points}
+              />
+              {zoom > 6 && (
+                <Checkpoint center={points[0]} postId={post.id}>
+                  <div
+                    className={styles.markerContent}
+                    onClick={() => router.push('/posts/' + post.id.toString())}
+                  >
+                    {isImagePresent && (
+                      <Image src={post.coverImage} width={300} height={300} />
+                    )}
+                    {post.title}
+                  </div>
+                </Checkpoint>
+              )}
+            </div>
+          )
+        })}
+        <Marker position={lastPoint} icon={lastPointIcon} />
+      </FeatureGroup>
+      <button onClick={handleZoomFit} className={styles.mapButton}>Zoom Fit</button>
     </div>
   )
 }
 
 const BikeMap = ({ posts }: BikeMapProps) => {
-  const firstPostPoints = posts[0].points || []
-  const firstPoint = firstPostPoints[0]
-
   const lastPostPoints = getPoints(posts[posts.length - 1])
   const lastPoint = lastPostPoints[lastPostPoints.length - 1]
 
   return (
     <MapContainer
       className={styles.map}
-      center={lastPoint}
       zoom={initialZoom}
       scrollWheelZoom={false}
     >

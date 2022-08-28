@@ -12,9 +12,14 @@ type Props = {
 
 const defaultTitle = 'ritonbike'
 
-const Layout = ({ title = defaultTitle, subtitle = '', container = false, children }: Props) => {
+const Layout = ({
+  title = defaultTitle,
+  subtitle = '',
+  container = false,
+  children,
+}: Props) => {
   const pageSubtitle = subtitle.length > 0 ? ' - ' + subtitle : ''
-  const classes = container ? styles.container : '' 
+  const classes = container ? styles.container : ''
   return (
     <div className={styles.root}>
       <Head>
@@ -30,9 +35,7 @@ const Layout = ({ title = defaultTitle, subtitle = '', container = false, childr
           href="/apple-touch-icon.png"
         ></link>
       </Head>
-      <div className={classes}>
-        {children}
-      </div>
+      <div className={classes}>{children}</div>
     </div>
   )
 }

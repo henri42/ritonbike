@@ -12,3 +12,14 @@
   border-radius: 3px;
   position: relative;
 }
+.mapContent {
+  position: relative;
+}
+
+.mapButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  z-index: 750; /* on top of every Leaflet panes */
+}
