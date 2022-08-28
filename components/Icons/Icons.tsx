@@ -21,4 +21,31 @@ const ChartIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-export { MapIcon, ListIcon, ChartIcon }
+const DistanceIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} {...props}>
+    <path fill="none" d="M0 0h24v24H0z" />
+    <path d="M11.39 10.39 7.5 14.277 3.61 10.39a5.5 5.5 0 1 1 7.78 0zM7.5 8.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12.89 10.89-3.89 3.888-3.89-3.889a5.5 5.5 0 1 1 7.78 0zM16.5 17.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+  </svg>
+)
+
+const UpIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} {...props}>
+    <path fill="none" d="M0 0h24v24H0z" />
+    <path
+      d="m16.004 9.414-8.607 8.607-1.414-1.414L14.589 8H7.004V6h11v11h-2V9.414z"
+      fill="rgba(47,204,113,1)"
+    />
+  </svg>
+)
+
+const DownIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} {...props}>
+    <path fill="none" d="M0 0h24v24H0z" />
+    <path
+      d="M14.59 16.004 5.982 7.397l1.414-1.414 8.607 8.606V7.004h2v11h-11v-2z"
+      fill="rgba(231,76,60,1)"
+    />
+  </svg>
+)
+
+export { MapIcon, ListIcon, ChartIcon, DistanceIcon, UpIcon, DownIcon }

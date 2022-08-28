@@ -7,9 +7,15 @@ import {
   Tooltip,
   useMapEvent,
   Marker,
-  FeatureGroup
+  FeatureGroup,
 } from 'react-leaflet'
-import { Icon, LatLngTuple , PathOptions, Point, FeatureGroup as LeafletFeatureGroup } from 'leaflet'
+import {
+  Icon,
+  LatLngTuple,
+  PathOptions,
+  Point,
+  FeatureGroup as LeafletFeatureGroup,
+} from 'leaflet'
 
 import styled from 'styled-components'
 import styles from './BikeMap.module.css'
@@ -179,7 +185,9 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
         })}
         <Marker position={lastPoint} icon={lastPointIcon} />
       </FeatureGroup>
-      <button onClick={handleZoomFit} className={styles.mapButton}>Zoom Fit</button>
+      <button onClick={handleZoomFit} className={styles.mapButton}>
+        Zoom Fit
+      </button>
     </div>
   )
 }

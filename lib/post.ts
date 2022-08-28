@@ -39,6 +39,9 @@ const fetchPost = async (postId: number | string) => {
     coverImage:
       post.cover_image !== undefined ? backendUrl + post.cover_image : '',
     points: post.points || [],
+    distance: post.distance || 0,
+    uphill: post.uphill || 0,
+    downhill: post.downhill || 0,
     created: post.created,
     id: post.id,
   }

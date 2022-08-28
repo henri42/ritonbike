@@ -11,5 +11,8 @@ export type Post = {
   created: string
   id: number
   title: string
-  points?: Point[]
+  points: Point[]
+  distance: number
+  uphill: number
+  downhill: number
 }
