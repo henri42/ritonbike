@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
+import { getPlaiceholder } from "plaiceholder";
 import type { Post } from '../../types/post'
-import { SVGProps } from 'react'
 
 import styles from '../../styles/Post.module.css'
 import Link from 'next/link'
@@ -10,7 +10,8 @@ import { fetchAllPosts, fetchPost } from '../../lib/post'
 import Layout from '../../components/Layout/Layout'
 
 type Props = {
-  postData: Post
+  postData: Post,
+  imageProps: any
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -31,14 +32,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = params ? (params.id as string) : 1
   const postData = await fetchPost(postId)
+  console.log(postData.coverImage)
+  const { base64, img } = await getPlaiceholder(postData.coverImage)
   return {
     props: {
       postData,
+      imageProps: {
+        ...img,
+        blurDataURL: base64,        
+      }
     },
   }
 }
 
-const Post = ({ postData }: Props) => {
+const Post = ({ postData, imageProps }: Props) => {
   const mapLink = (
     <a className={styles.navLink}>
       <MapIcon />
@@ -62,10 +69,11 @@ const Post = ({ postData }: Props) => {
     <Layout container subtitle={postData.title}>
       <div className={styles.imageContainer}>
         <Image
-          src={postData.coverImage}
+          {...imageProps}
           layout="responsive"
           width={500}
           height={500}
+          placeholder="blur"
         />
       </div>
       <h1>{postData.title}</h1>
