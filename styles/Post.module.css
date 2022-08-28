@@ -1,22 +1,4 @@
-.root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
-  max-width: 550px;
-  margin: auto auto;
-  padding: 1rem 1rem;
-}
-
-.root p {
+.content {
   line-height: 24px;
 }
 
@@ -30,13 +12,13 @@
   border-radius: 5px;
 }
 
-.root footer {
+.footer {
   margin: 1rem 0;
   padding: 0 1rem;
   width: 100%;
 }
 
-.root nav {
+.nav {
   display: flex;
   justify-content: space-evenly;
 }

@@ -7,6 +7,7 @@ import styles from '../../styles/Post.module.css'
 import Link from 'next/link'
 import { ChartIcon, ListIcon, MapIcon } from '../../components/Icons/Icons'
 import { fetchAllPosts, fetchPost } from '../../lib/post'
+import Layout from '../../components/Layout/Layout'
 
 type Props = {
   postData: Post
@@ -58,8 +59,7 @@ const Post = ({ postData }: Props) => {
   )
 
   return (
-    <div className={styles.root}>
-      <div className={styles.container}>
+    <Layout container subtitle={postData.title}>
         <div className={styles.imageContainer}>
           <Image
             src={postData.coverImage}
@@ -69,16 +69,15 @@ const Post = ({ postData }: Props) => {
           />
         </div>
         <h1>{postData.title}</h1>
-        <p>{postData.content}</p>
-        <footer>
-          <nav>
+        <p className={styles.content}>{postData.content}</p>
+        <footer className={styles.footer}>
+          <nav className={styles.nav}> 
             <Link href="/">{mapLink}</Link>
             <Link href="/list">{listLink}</Link>
             <Link href="/stats">{statsLink}</Link>
           </nav>
         </footer>
-      </div>
-    </div>
+    </Layout>
   )
 }
 

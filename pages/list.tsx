@@ -3,6 +3,7 @@ import { fetchAllPosts, fetchPost } from '../lib/post'
 import { Post } from '../types/post'
 
 import styles from '../styles/List.module.css'
+import Layout from '../components/Layout/Layout'
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await fetchAllPosts()
@@ -19,15 +20,17 @@ type Props = {
 
 const List = ({ posts }: Props) => {
   return (
-    <div className={styles.root}>
-      <div className={styles.container}>
-        {posts.map((p) => (
-          <div key={p.id}>
-            <h3>{p.title}</h3>
-          </div>
-        ))}
+    <Layout container>
+      <div className={styles.root}>
+        <div className={styles.container}>
+          {posts.map((p) => (
+            <div key={p.id}>
+              <h3>{p.title}</h3>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   )
 }
 

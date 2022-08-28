@@ -1,11 +1,10 @@
 import { Post } from '../types/post'
 
 const fetchAllPosts = async () => {
-
   const backendUrl = process.env.BACK_END_URL
   const readApiKey = process.env.READ_APIKEY
-  if (backendUrl === undefined) throw Error("BACK_END_URL not set properly")
-  if (readApiKey === undefined) throw Error("READ_APIKEY not set properly")
+  if (backendUrl === undefined) throw Error('BACK_END_URL not set properly')
+  if (readApiKey === undefined) throw Error('READ_APIKEY not set properly')
 
   const headers = new Headers({
     Authorization: `Bearer ${readApiKey}`,
@@ -22,9 +21,9 @@ const fetchAllPosts = async () => {
 const fetchPost = async (postId: number | string) => {
   const backendUrl = process.env.BACK_END_URL
   const readApiKey = process.env.READ_APIKEY
-  if (backendUrl === undefined) throw Error("BACK_END_URL not set properly")
-  if (readApiKey === undefined) throw Error("READ_APIKEY not set properly")
-  
+  if (backendUrl === undefined) throw Error('BACK_END_URL not set properly')
+  if (readApiKey === undefined) throw Error('READ_APIKEY not set properly')
+
   const headers = new Headers({
     Authorization: `Bearer ${readApiKey}`,
   })
