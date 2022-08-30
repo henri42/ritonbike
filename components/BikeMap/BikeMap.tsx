@@ -28,7 +28,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Stats from '../Stats/Stats'
 import { Button, ButtonLink } from '../Buttons/Buttons'
-import { ChartIcon, ListIcon, MapIcon } from '../Icons/Icons'
+import { ChartIcon, ListIcon, ZoomFitIcon } from '../Icons/Icons'
 
 const getPoints = (post: Post) => {
   const points =
@@ -177,7 +177,7 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
     if (groupRef.current != null) {
       const bounds = groupRef.current.getBounds()
       mapEvent.fitBounds(bounds, {
-        padding: [100, 100]
+        padding: [100, 100],
       })
     }
   }
@@ -225,7 +225,7 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
       </FeatureGroup>
       <div className={styles.mapButtons}>
         <Button onClick={handleZoomFit} title="Ajuster">
-          <ChartIcon />
+          <ZoomFitIcon />
         </Button>
         <ButtonLink href="/list" title="Articles">
           <ListIcon />
