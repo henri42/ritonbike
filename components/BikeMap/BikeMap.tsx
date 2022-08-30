@@ -176,7 +176,9 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
   const handleZoomFit = () => {
     if (groupRef.current != null) {
       const bounds = groupRef.current.getBounds()
-      mapEvent.fitBounds(bounds)
+      mapEvent.fitBounds(bounds, {
+        padding: [100, 100]
+      })
     }
   }
 
