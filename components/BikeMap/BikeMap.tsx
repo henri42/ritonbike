@@ -202,7 +202,11 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
                       <Image src={post.coverImage} width={300} height={300} />
                     )}
                     <span className={styles.title}>{post.title}</span>
-                    <Stats distance={post.distance} uphill={post.uphill} downhill={post.downhill} />
+                    <Stats
+                      distance={post.distance}
+                      uphill={post.uphill}
+                      downhill={post.downhill}
+                    />
                   </div>
                 </Checkpoint>
               )}

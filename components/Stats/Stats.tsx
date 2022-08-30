@@ -1,10 +1,6 @@
 import styles from './Stats.module.css'
 
-import {
-  UpIcon,
-  DownIcon,
-  DistanceIcon,
-} from '../../components/Icons/Icons'
+import { UpIcon, DownIcon, DistanceIcon } from '../../components/Icons/Icons'
 
 type StatsProps = {
   distance: number
@@ -19,19 +15,22 @@ const Stats = ({ distance, uphill, downhill }: StatsProps) => {
       <div className={`${styles.invert} ${styles.item}`}>
         <DistanceIcon />
         <span>
-          {kmDistance}<small>km</small>
+          {kmDistance}
+          <small>km</small>
         </span>
       </div>
       <div className={styles.item}>
         <UpIcon />
         <span>
-          {uphill}<small>m</small>
+          {uphill}
+          <small>m</small>
         </span>
       </div>
       <div className={styles.item}>
         <DownIcon />
         <span>
-          {downhill}<small>m</small>
+          {downhill}
+          <small>m</small>
         </span>
       </div>
     </div>

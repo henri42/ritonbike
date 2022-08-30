@@ -1,0 +1,46 @@
+.root {
+  -webkit-box-shadow: 0px 0px 0px 1px black;
+  -moz-box-shadow: 0px 0px 0px 1px black;
+  box-shadow: 0px 0px 0px 1px black;
+
+  transition: box-shadow 0.1s ease-in-out;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  text-decoration: none;
+  color: black;
+  margin: 3px;
+  border-radius: 5px;
+  padding: 0.3rem;
+}
+
+.root:hover {
+  -webkit-box-shadow: 0px 0px 0px 3px black;
+  -moz-box-shadow: 0px 0px 0px 3px black;
+  box-shadow: 0px 0px 0px 3px black;
+}
+
+.root span {
+  margin: 0 0.3rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .root {
+    -webkit-box-shadow: 0px 0px 0px 1px white;
+    -moz-box-shadow: 0px 0px 0px 1px white;
+    box-shadow: 0px 0px 0px 1px white;
+    color: white;
+  }
+
+  .root:hover {
+    -webkit-box-shadow: 0px 0px 0px 3px white;
+    -moz-box-shadow: 0px 0px 0px 3px white;
+    box-shadow: 0px 0px 0px 3px white;
+  }
+
+  .root svg {
+    filter: invert(100%);
+  }
+}

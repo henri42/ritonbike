@@ -4,6 +4,9 @@ import { Post } from '../types/post'
 
 import styles from '../styles/List.module.css'
 import Layout from '../components/Layout/Layout'
+import Link from 'next/link'
+import ButtonLink from '../components/Button/ButtonLink'
+import { ChartIcon, ListIcon, MapIcon } from '../components/Icons/Icons'
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await fetchAllPosts()
@@ -22,13 +25,23 @@ const List = ({ posts }: Props) => {
   return (
     <Layout container>
       <div className={styles.root}>
-        <div className={styles.container}>
+        <div className={styles.articles}>
           {posts.map((p) => (
             <div key={p.id}>
               <h3>{p.title}</h3>
             </div>
           ))}
         </div>
+        <footer className={styles.footer}>
+          <nav className={styles.nav}>
+            <ButtonLink href="/" title="Carte">
+              <MapIcon />
+            </ButtonLink>
+            <ButtonLink href="/stats" title="Stats">
+              <ChartIcon />
+            </ButtonLink>
+          </nav>
+        </footer>
       </div>
     </Layout>
   )

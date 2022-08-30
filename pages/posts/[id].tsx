@@ -5,15 +5,12 @@ import type { Post } from '../../types/post'
 
 import styles from '../../styles/Post.module.css'
 import Link from 'next/link'
-import {
-  ChartIcon,
-  ListIcon,
-  MapIcon,
-} from '../../components/Icons/Icons'
+import { ChartIcon, ListIcon, MapIcon } from '../../components/Icons/Icons'
 import Layout from '../../components/Layout/Layout'
 import Stats from '../../components/Stats/Stats'
 
 import { fetchAllPosts, fetchPost } from '../../lib/post'
+import ButtonLink from '../../components/Button/ButtonLink'
 
 type Props = {
   postData: Post
@@ -52,25 +49,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 const Post = ({ postData, imageProps }: Props) => {
-  const mapLink = (
-    <a className={styles.navLink}>
-      <MapIcon />
-      <span>Carte</span>
-    </a>
-  )
-  const listLink = (
-    <a className={styles.navLink}>
-      <ListIcon />
-      <span>Liste</span>
-    </a>
-  )
-  const statsLink = (
-    <a className={styles.navLink}>
-      <ChartIcon />
-      <span>Stats</span>
-    </a>
-  )
-
   return (
     <Layout container subtitle={postData.title}>
       <div className={styles.imageContainer}>
@@ -88,14 +66,23 @@ const Post = ({ postData, imageProps }: Props) => {
         uphill={postData.uphill}
         downhill={postData.downhill}
       />
-      <p className={styles.content} dangerouslySetInnerHTML={{
-        __html: postData.content.replace(/\n/g, '<br />')
-      }}></p>
+      <p
+        className={styles.content}
+        dangerouslySetInnerHTML={{
+          __html: postData.content.replace(/\n/g, '<br />'),
+        }}
+      ></p>
       <footer className={styles.footer}>
         <nav className={styles.nav}>
-          <Link href="/">{mapLink}</Link>
-          <Link href="/list">{listLink}</Link>
-          <Link href="/stats">{statsLink}</Link>
+        <ButtonLink href="/" title="Carte">
+              <MapIcon />
+            </ButtonLink>
+            <ButtonLink href="/list" title="Articles">
+              <ListIcon />
+            </ButtonLink>
+            <ButtonLink href="/stats" title="Stats">
+              <ChartIcon />
+            </ButtonLink>
         </nav>
       </footer>
     </Layout>
