@@ -26,11 +26,12 @@
   margin: 0 0.3rem;
 }
 
-a.root, button.root {
+a.root,
+button.root {
   box-sizing: border-box;
   color: unset;
   font-family: unset;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .root {
@@ -38,8 +39,6 @@ a.root, button.root {
   color: black;
   background-color: white;
 }
-
-
 
 @media (prefers-color-scheme: dark) {
   .root {

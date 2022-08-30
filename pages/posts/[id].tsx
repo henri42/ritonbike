@@ -73,15 +73,15 @@ const Post = ({ postData, imageProps }: Props) => {
       ></p>
       <footer className={styles.footer}>
         <nav className={styles.nav}>
-        <ButtonLink href="/" title="Carte">
-              <MapIcon />
-            </ButtonLink>
-            <ButtonLink href="/list" title="Articles">
-              <ListIcon />
-            </ButtonLink>
-            <ButtonLink href="/stats" title="Stats">
-              <ChartIcon />
-            </ButtonLink>
+          <ButtonLink href="/" title="Carte">
+            <MapIcon />
+          </ButtonLink>
+          <ButtonLink href="/list" title="Articles">
+            <ListIcon />
+          </ButtonLink>
+          <ButtonLink href="/stats" title="Stats">
+            <ChartIcon />
+          </ButtonLink>
         </nav>
       </footer>
     </Layout>
