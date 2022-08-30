@@ -113,6 +113,12 @@ const StyledPopup = styled(Popup)`
 const StyledTooltip = styled(Tooltip)`
   white-space: normal;
   @media (prefers-color-scheme: dark) {
+    &.leaflet-tooltip-right::before {
+      border-right-color: #000000;
+    }
+    &.leaflet-tooltip-left::before {
+      border-left-color: #000000;
+    }
     background-color: black;
     border-color: black;
     color: white;
@@ -146,7 +152,7 @@ const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
           {children}
         </StyledPopup>
       ) : (
-        <StyledTooltip permanent opacity={1}>
+        <StyledTooltip opacity={1}>
           {children}
         </StyledTooltip>
       )}
