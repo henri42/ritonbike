@@ -26,6 +26,10 @@
   margin: 0 0.3rem;
 }
 
+button.root {
+  border: none;
+}
+
 @media (prefers-color-scheme: dark) {
   .root {
     -webkit-box-shadow: 0px 0px 0px 1px white;

@@ -4,13 +4,12 @@ import { getPlaiceholder } from 'plaiceholder'
 import type { Post } from '../../types/post'
 
 import styles from '../../styles/Post.module.css'
-import Link from 'next/link'
 import { ChartIcon, ListIcon, MapIcon } from '../../components/Icons/Icons'
 import Layout from '../../components/Layout/Layout'
 import Stats from '../../components/Stats/Stats'
 
 import { fetchAllPosts, fetchPost } from '../../lib/post'
-import ButtonLink from '../../components/Button/ButtonLink'
+import { ButtonLink } from '../../components/Buttons/Buttons'
 
 type Props = {
   postData: Post

@@ -4,9 +4,8 @@ import { Post } from '../types/post'
 
 import styles from '../styles/List.module.css'
 import Layout from '../components/Layout/Layout'
-import Link from 'next/link'
-import ButtonLink from '../components/Button/ButtonLink'
-import { ChartIcon, ListIcon, MapIcon } from '../components/Icons/Icons'
+import { ButtonLink } from '../components/Buttons/Buttons'
+import { ChartIcon , MapIcon } from '../components/Icons/Icons'
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await fetchAllPosts()
