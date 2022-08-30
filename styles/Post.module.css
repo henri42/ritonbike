@@ -1,5 +1,7 @@
 .content {
   line-height: 24px;
+  text-justify: auto;
+  text-align: justify;
 }
 
 .imageContainer {
@@ -10,24 +12,6 @@
 
 .imageContainer img {
   border-radius: 5px;
-}
-
-.stats {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: .5rem 0;
-}
-
-.stats .item {
-  display: flex;
-  align-items: center;
-  margin: 0 1rem;
-}
-
-.stats span {
-  color: rgba(128, 128, 128, 0.5);
-  margin-left: .2rem;
 }
 
 .footer {

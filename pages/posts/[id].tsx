@@ -9,12 +9,11 @@ import {
   ChartIcon,
   ListIcon,
   MapIcon,
-  UpIcon,
-  DownIcon,
-  DistanceIcon,
 } from '../../components/Icons/Icons'
-import { fetchAllPosts, fetchPost } from '../../lib/post'
 import Layout from '../../components/Layout/Layout'
+import Stats from '../../components/Stats/Stats'
+
+import { fetchAllPosts, fetchPost } from '../../lib/post'
 
 type Props = {
   postData: Post
@@ -72,8 +71,6 @@ const Post = ({ postData, imageProps }: Props) => {
     </a>
   )
 
-  const kmDistance = (postData.distance / 1000).toFixed(1)
-
   return (
     <Layout container subtitle={postData.title}>
       <div className={styles.imageContainer}>
@@ -86,23 +83,14 @@ const Post = ({ postData, imageProps }: Props) => {
         />
       </div>
       <h1>{postData.title}</h1>
-      <div className={styles.stats}>
-        <div className={`${styles.invert} ${styles.item}`}>
-          <DistanceIcon />
-          <span>{kmDistance} <small>km</small></span>
-        </div>
-        <div className={styles.item}>
-          <UpIcon />
-          <span>{postData.uphill} <small>m</small></span>
-        </div>
-        <div className={styles.item}>
-          <DownIcon />
-          <span>
-            {postData.downhill} <small>m</small>
-          </span>
-        </div>
-      </div>
-      <p className={styles.content}>{postData.content}</p>
+      <Stats
+        distance={postData.distance}
+        uphill={postData.uphill}
+        downhill={postData.downhill}
+      />
+      <p className={styles.content} dangerouslySetInnerHTML={{
+        __html: postData.content.replace(/\n/g, '<br />')
+      }}></p>
       <footer className={styles.footer}>
         <nav className={styles.nav}>
           <Link href="/">{mapLink}</Link>

@@ -26,6 +26,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import Stats from '../Stats/Stats'
 
 const getPoints = (post: Post) => {
   const points =
@@ -78,12 +79,25 @@ const StyledPopup = styled(Popup)`
   flex-direction: column;
   .leaflet-popup-content-wrapper {
     border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-    transition: all 0.05s ease-in-out;
+
+    -webkit-box-shadow: 0px 0px 0px 1px black;
+    -moz-box-shadow: 0px 0px 0px 1px black;
+    box-shadow: 0px 0px 0px 1px black;
+
+    transition: all 0.1s ease-in-out;
     cursor: pointer;
     &:active {
-      box-shadow: 0 1 3px rgba(0, 0, 0, 0.2);
       transform: scale(98%);
+      opacity: 0.9;
+    }
+    &:hover {
+      -webkit-box-shadow: 0px 0px 0px 3px black;
+      -moz-box-shadow: 0px 0px 0px 3px black;
+      box-shadow: 0px 0px 0px 3px black;
+    }
+    @media (prefers-color-scheme: dark) {
+      background-color: black;
+      color: white;
     }
   }
   .leaflet-popup-content {
@@ -91,6 +105,15 @@ const StyledPopup = styled(Popup)`
   }
   .leaflet-popup-tip {
     display: none;
+  }
+`
+
+const StyledTooltip = styled(Tooltip)`
+  white-space: normal;
+  @media (prefers-color-scheme: dark) {
+    background-color: black;
+    border-color: black;
+    color: white;
   }
 `
 
@@ -121,7 +144,9 @@ const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
           {children}
         </StyledPopup>
       ) : (
-        <Tooltip opacity={1}>{children}</Tooltip>
+        <StyledTooltip permanent opacity={1}>
+          {children}
+        </StyledTooltip>
       )}
     </CircleMarker>
   )
@@ -176,7 +201,8 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
                     {isImagePresent && (
                       <Image src={post.coverImage} width={300} height={300} />
                     )}
-                    {post.title}
+                    <span className={styles.title}>{post.title}</span>
+                    <Stats distance={post.distance} uphill={post.uphill} downhill={post.downhill} />
                   </div>
                 </Checkpoint>
               )}
