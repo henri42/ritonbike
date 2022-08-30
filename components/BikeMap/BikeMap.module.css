@@ -24,10 +24,16 @@
   position: relative;
 }
 
-.mapButton {
+.mapButtons {
   position: absolute;
   top: .5rem;
   right: .5rem;
 
   z-index: 750; /* on top of every Leaflet panes */
+
+  display: flex;
+}
+
+.mapButtons button, .mapButtons a {
+  margin-left: .5rem;
 }

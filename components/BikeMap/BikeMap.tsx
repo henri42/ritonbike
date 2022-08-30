@@ -27,8 +27,8 @@ import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Stats from '../Stats/Stats'
-import { Button } from '../Buttons/Buttons'
-import { ChartIcon } from '../Icons/Icons'
+import { Button, ButtonLink } from '../Buttons/Buttons'
+import { ChartIcon, MapIcon } from '../Icons/Icons'
 
 const getPoints = (post: Post) => {
   const points =
@@ -223,15 +223,17 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
         })}
         <Marker position={lastPoint} icon={lastPointIcon} />
       </FeatureGroup>
-      <div className={styles.mapButton}>
+      <div className={styles.mapButtons}>
       <Button onClick={handleZoomFit} title='Ajuster'>
         <ChartIcon />
       </Button>
+      <ButtonLink href="/" title="Carte">
+              <MapIcon />
+            </ButtonLink>
+            <ButtonLink href="/stats" title="Stats">
+              <ChartIcon />
+            </ButtonLink>
       </div>
-
-      <button  >
-        Zoom Fit
-      </button>
     </div>
   )
 }
