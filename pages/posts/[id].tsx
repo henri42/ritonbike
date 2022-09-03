@@ -34,30 +34,38 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = params ? (params.id as string) : 1
   const postData = await fetchPost(postId)
+  const isImagePresent = postData.coverImage !== ''
 
-  const { base64, img } = await getPlaiceholder(postData.coverImage)
+  let imageProps = null
+
+  if (isImagePresent) {
+    const { base64, img } = await getPlaiceholder(postData.coverImage)
+    imageProps = {
+      ...img,
+      blurDataURL: base64,
+    }
+  }
+  
   return {
     props: {
       postData,
-      imageProps: {
-        ...img,
-        blurDataURL: base64,
-      },
+      imageProps
     },
   }
 }
 
 const Post = ({ postData, imageProps }: Props) => {
+  const isImagePresent = postData.coverImage !== ''
   return (
     <Layout container subtitle={postData.title}>
       <div className={styles.imageContainer}>
-        <Image
+        {isImagePresent && <Image
           {...imageProps}
           layout="responsive"
           width={500}
           height={500}
           placeholder="blur"
-        />
+        />}
       </div>
       <h1>{postData.title}</h1>
       <Stats

@@ -8,6 +8,8 @@ import {
   useMapEvent,
   Marker,
   FeatureGroup,
+  useMap,
+  useMapEvents,
 } from 'react-leaflet'
 import {
   Icon,
@@ -40,6 +42,11 @@ const getPoints = (post: Post) => {
 
 const initialZoom = 7
 const routeColor = '#1fe885'
+
+const lastPointIcon = new Icon({
+  iconUrl: '/biker-green.gif',
+  iconAnchor: [-5, 17],
+})
 
 const routeOptions: PathOptions = {
   color: routeColor,
@@ -161,22 +168,13 @@ const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
 const MapContent = ({ posts, lastPoint }: MapContentProps) => {
   const router = useRouter()
 
-  const lastPointIcon = new Icon({
-    iconUrl: '/biker-green.gif',
-    iconAnchor: [-5, 17],
-  })
-
-  const [zoom, setZoom] = useState(initialZoom)
-  const mapEvent = useMapEvent('zoom', () => {
-    setZoom(mapEvent.getZoom())
-  })
-
+  const map = useMap()
   const groupRef = useRef<LeafletFeatureGroup>(null)
 
   const handleZoomFit = () => {
     if (groupRef.current != null) {
       const bounds = groupRef.current.getBounds()
-      mapEvent.fitBounds(bounds, {
+      map.fitBounds(bounds, {
         padding: [100, 100],
       })
     }
@@ -200,28 +198,26 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
                 smoothFactor={4}
                 positions={points}
               />
-              {zoom > 6 && (
-                <Checkpoint center={points[0]} postId={post.id}>
-                  <div
-                    className={styles.markerContent}
-                    onClick={() => router.push('/posts/' + post.id.toString())}
-                  >
-                    {isImagePresent && (
-                      <Image src={post.coverImage} width={300} height={300} />
-                    )}
-                    <span className={styles.title}>{post.title}</span>
-                    <Stats
-                      distance={post.distance}
-                      uphill={post.uphill}
-                      downhill={post.downhill}
-                    />
-                  </div>
-                </Checkpoint>
-              )}
+              <Checkpoint center={points[0]} postId={post.id}>
+                <div
+                  className={styles.markerContent}
+                  onClick={() => router.push('/posts/' + post.id.toString())}
+                >
+                  {isImagePresent && (
+                    <Image src={post.coverImage} width={300} height={300} />
+                  )}
+                  <span className={styles.title}>{post.title}</span>
+                  <Stats
+                    distance={post.distance}
+                    uphill={post.uphill}
+                    downhill={post.downhill}
+                  />
+                </div>
+              </Checkpoint>
             </div>
           )
         })}
-        <Marker position={lastPoint} icon={lastPointIcon} />
+        {<Marker position={lastPoint} icon={lastPointIcon} />}
       </FeatureGroup>
       <div className={styles.mapButtons}>
         <Button onClick={handleZoomFit} title="Ajuster">
