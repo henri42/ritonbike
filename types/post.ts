@@ -16,3 +16,10 @@ export type Post = {
   uphill: number
   downhill: number
 }
+
+export type Stat = {
+  id: number
+  value: number
+  unit: string
+  emojis?: string
+}
