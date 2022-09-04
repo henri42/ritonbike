@@ -1,39 +1,38 @@
-import type { GetStaticProps } from 'next'
-import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import dynamic from 'next/dynamic'
-import type { Post } from '../types/post'
-import { fetchAllPosts, fetchPost } from '../lib/post'
 import Layout from '../components/Layout/Layout'
+import Countdown, { CountdownRendererFn } from 'react-countdown'
+import Image from 'next/image'
 
-const MapWithNoSSR = dynamic(() => import('../components/BikeMap/BikeMap'), {
-  ssr: false,
-})
+const Completionist = () => <span>Zépartiiii !</span>
 
-export const getStaticProps: GetStaticProps = async () => {
-  const posts = await fetchAllPosts()
-  const postsPromises = posts.map(async (p) => fetchPost(p.id))
-  const fullPosts = await Promise.all(postsPromises)
-
-  return {
-    props: {
-      posts: fullPosts,
-    },
+const renderer: CountdownRendererFn = ({
+  days,
+  hours,
+  minutes,
+  seconds,
+  completed,
+}) => {
+  if (completed) {
+    return <Completionist />
+  } else {
+    return (
+        <span suppressHydrationWarning={true} className={styles.countdown}>
+          {days}j {hours}h {minutes}m {seconds}s
+        </span>
+    )
   }
 }
 
-type Props = {
-  posts: Post[]
-}
-
-const Home = ({ posts }: Props) => {
+const Home = () => {
+  const startDate = new Date(2022, 8, 12, 0, 0, 0, 0)
   return (
     <Layout>
       <div className={styles.root}>
         <main className={styles.main}>
-          <MapWithNoSSR posts={posts} />
+          <Image src="/tire.gif" width={32} height={32} />
+          <h1>Encore quelques petits réglages...</h1>
+          <Countdown date={startDate} renderer={renderer} />
         </main>
-        <footer className={styles.footer}>🚴 riton bike adventure 🍃</footer>
       </div>
     </Layout>
   )
