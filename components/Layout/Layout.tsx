@@ -26,14 +26,18 @@ const Layout = ({
         <title>{title + pageSubtitle}</title>
         <meta
           name="description"
-          content="Un petit tour de la méditerrannée avec pour véhicule le vélocipède."
+          content="Un petit tour de la méditerrannée en vélocipède."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link key="favicon" rel="icon" href="/favicon.ico" />
         <link
+          key="apple-touch-icon"
           rel="apple-touch-icon"
           sizes="180x180"
           href="/apple-touch-icon.png"
         ></link>
+        <link key="icon32" rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"></link>
+        <link key="icon16" rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"></link>
+        <link key="manifest" rel="manifest" href="/site.webmanifest"></link>
       </Head>
       <div className={classes}>{children}</div>
     </div>
