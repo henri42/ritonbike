@@ -1,5 +1,14 @@
 import { Post } from '../types/post'
 
+const fetchAllStats = async () => {
+  const backendUrl = process.env.BACK_END_URL
+  if (backendUrl === undefined) throw Error('BACK_END_URL not set properly')
+
+  const res = await fetch(backendUrl + '/api/stats')
+  const stats = await res.json()
+  return stats
+}
+
 const fetchAllPosts = async () => {
   const backendUrl = process.env.BACK_END_URL
   const readApiKey = process.env.READ_APIKEY
@@ -48,4 +57,4 @@ const fetchPost = async (postId: number | string) => {
   return postObject
 }
 
-export { fetchAllPosts, fetchPost }
+export { fetchAllPosts, fetchPost, fetchAllStats }

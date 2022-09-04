@@ -45,11 +45,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       blurDataURL: base64,
     }
   }
-  
+
   return {
     props: {
       postData,
-      imageProps
+      imageProps,
     },
   }
 }
@@ -59,13 +59,15 @@ const Post = ({ postData, imageProps }: Props) => {
   return (
     <Layout container subtitle={postData.title}>
       <div className={styles.imageContainer}>
-        {isImagePresent && <Image
-          {...imageProps}
-          layout="responsive"
-          width={500}
-          height={500}
-          placeholder="blur"
-        />}
+        {isImagePresent && (
+          <Image
+            {...imageProps}
+            layout="responsive"
+            width={500}
+            height={500}
+            placeholder="blur"
+          />
+        )}
       </div>
       <h1>{postData.title}</h1>
       <Stats
