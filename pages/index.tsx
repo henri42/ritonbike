@@ -32,8 +32,8 @@ const Home = ({ posts }: Props) => {
       <div className={styles.root}>
         <main className={styles.main}>
           <MapWithNoSSR posts={posts} />
+          <span className={styles.credits}>riton bike trip</span>
         </main>
-        <footer className={styles.footer}>🚴 riton bike adventure 🍃</footer>
       </div>
     </Layout>
   )

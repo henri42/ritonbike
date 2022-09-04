@@ -29,7 +29,7 @@
 a.root,
 button.root {
   box-sizing: border-box;
-  color: unset;
+  color: unset !important;
   font-family: unset;
   font-size: 0.8rem;
 }

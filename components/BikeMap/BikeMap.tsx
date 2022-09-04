@@ -242,7 +242,6 @@ const BikeMap = ({ posts }: BikeMapProps) => {
     <MapContainer
       className={styles.map}
       zoom={initialZoom}
-      scrollWheelZoom={false}
     >
       <MapContent posts={posts} lastPoint={lastPoint} />
     </MapContainer>

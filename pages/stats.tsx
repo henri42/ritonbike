@@ -48,7 +48,7 @@ const Stats = ({ stats, totalUphill, totalDistance }: PageProps) => {
   return (
     <Layout container>
       <div className={styles.root}>
-        <h2>Quelques petites stats :</h2>
+        <h2>Chiffres sans intérêt 🤷</h2>
         <div className={styles.stats}>
             <StatItem value={totalDistance} unit="km parcourus">
               <span className={styles.bigEmoji}>🛣️</span>
