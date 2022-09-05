@@ -5,25 +5,24 @@ import {
   CircleMarker,
   Popup,
   Tooltip,
-  useMapEvent,
   Marker,
   FeatureGroup,
   useMap,
-  useMapEvents,
 } from 'react-leaflet'
 import {
   Icon,
   LatLngTuple,
   PathOptions,
-  Point,
   FeatureGroup as LeafletFeatureGroup,
+  LineUtil,
+  Point as LeafletPoint
 } from 'leaflet'
 
 import styled from 'styled-components'
 import styles from './BikeMap.module.css'
 import 'leaflet/dist/leaflet.css'
 
-import { Post } from '../../types/post'
+import { Post, Point } from '../../types/post'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
@@ -40,15 +39,37 @@ const getPoints = (post: Post) => {
   return points
 }
 
+const getMiddle = (points: Point[]) => {
+  const leftIndex = Math.floor(points.length / 2)
+  const rightIndex = leftIndex + 1
+
+  const left = points[0]
+  const right = points[points.length -1 ]
+
+  const birdFlightMiddle = new LeafletPoint((left.lat + right.lat) / 2, (left.lng + right.lng) / 2)
+
+  const middle = LineUtil.closestPointOnSegment(birdFlightMiddle, new LeafletPoint(left.lat, left.lng), new LeafletPoint(right.lat, right.lng))
+
+  return [middle.x, middle.y] as LatLngTuple
+}
+
 const initialZoom = 7
 
 
 const routeColors = {
   bike: '#18d978',
   boat: '#318bff',
-  train: '#ff2457',
+  train: '#E67E22',
   car: '#ff2457'
 }
+
+const routeSvgUrl = {
+  bike: '',
+  boat: '/sailboat-line.svg',
+  train: '/train-line.svg',
+  car: '/car-line.svg'
+}
+
 const defaultColor = routeColors.bike
 
 const lastPointIcon = new Icon({
@@ -78,7 +99,6 @@ const markerDesktopOptions: PathOptions = {
 
 type MapContentProps = {
   posts: Post[]
-  lastPoint: LatLngTuple
 }
 
 type BikeMapProps = {
@@ -166,7 +186,7 @@ const Checkpoint = ({ center, postId, color, children }: CheckpointProps) => {
       }}
     >
       {!isDesktop ? (
-        <StyledPopup closeButton={false} offset={new Point(0, 2)}>
+        <StyledPopup closeButton={false} offset={[0, 2]}>
           {children}
         </StyledPopup>
       ) : (
@@ -176,11 +196,14 @@ const Checkpoint = ({ center, postId, color, children }: CheckpointProps) => {
   )
 }
 
-const MapContent = ({ posts, lastPoint }: MapContentProps) => {
+const MapContent = ({ posts }: MapContentProps) => {
   const router = useRouter()
 
   const map = useMap()
   const groupRef = useRef<LeafletFeatureGroup>(null)
+
+  const lastPostPoints = getPoints(posts[posts.length - 1])
+  const lastPoint = lastPostPoints[lastPostPoints.length - 1]
 
   const handleZoomFit = () => {
     if (groupRef.current != null) {
@@ -202,7 +225,15 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
         {posts.map((post) => {
           const points = getPoints(post)
           const isImagePresent = post.coverImage !== ''
+          const isBike = post.vehicle === 'bike'
           const color = routeColors[post.vehicle]
+
+          const vehicleIcon = new Icon({
+            iconUrl: routeSvgUrl[post.vehicle],
+            iconAnchor: [12, 12],
+            className: styles.svgMarker
+          })
+          
           return (
             <div key={post.id}>
               <Polyline
@@ -210,6 +241,7 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
                 smoothFactor={4}
                 positions={points}
               />
+              {!isBike && <Marker position={getMiddle(post.points)} icon={vehicleIcon} />}
               <Checkpoint center={points[0]} postId={post.id} color={color}>
                 <div
                   className={styles.markerContent}
@@ -247,15 +279,12 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
 }
 
 const BikeMap = ({ posts }: BikeMapProps) => {
-  const lastPostPoints = getPoints(posts[posts.length - 1])
-  const lastPoint = lastPostPoints[lastPostPoints.length - 1]
-
   return (
     <MapContainer
       className={styles.map}
       zoom={initialZoom}
     >
-      <MapContent posts={posts} lastPoint={lastPoint} />
+      <MapContent posts={posts} />
     </MapContainer>
   )
 }

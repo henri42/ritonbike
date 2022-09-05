@@ -38,3 +38,9 @@
 .mapButtons a {
   margin-left: 0.5rem;
 }
+
+.svgMarker {
+  background-color: white;
+  border-radius: 50%;
+  /* border: 2px solid red; */
+}
