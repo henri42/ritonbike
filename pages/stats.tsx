@@ -10,14 +10,20 @@ import { Post, Stat } from '../types/post'
 export const getStaticProps: GetStaticProps = async () => {
   const stats = await fetchAllStats()
   const posts = await fetchAllPosts()
-  const totalUphill = posts.filter(post => post.vehicle === 'bike').map(post => post.uphill).reduce((acc, current) => acc + current, 0)
-  const totalDistanceMeters = posts.filter(post => post.vehicle === 'bike').map(post => post.distance).reduce((acc, current) => acc + current, 0)
+  const totalUphill = posts
+    .filter((post) => post.vehicle === 'bike')
+    .map((post) => post.uphill)
+    .reduce((acc, current) => acc + current, 0)
+  const totalDistanceMeters = posts
+    .filter((post) => post.vehicle === 'bike')
+    .map((post) => post.distance)
+    .reduce((acc, current) => acc + current, 0)
   const totalDistance = (totalDistanceMeters / 1000).toFixed(0)
   return {
     props: {
       stats,
       totalUphill,
-      totalDistance
+      totalDistance,
     },
   }
 }
@@ -50,12 +56,12 @@ const Stats = ({ stats, totalUphill, totalDistance }: PageProps) => {
       <div className={styles.root}>
         <h2>Chiffres sans intérêt 🤷</h2>
         <div className={styles.stats}>
-            <StatItem value={totalDistance} unit="km parcourus">
-              <span className={styles.bigEmoji}>🛣️</span>
-            </StatItem>
-            <StatItem value={totalUphill} unit="m grimpés">
-              <span className={styles.bigEmoji}>⛰️</span>
-            </StatItem>
+          <StatItem value={totalDistance} unit="km parcourus">
+            <span className={styles.bigEmoji}>🛣️</span>
+          </StatItem>
+          <StatItem value={totalUphill} unit="m grimpés">
+            <span className={styles.bigEmoji}>⛰️</span>
+          </StatItem>
           {stats.map((stat) => (
             <StatItem key={stat.id} value={stat.value} unit={stat.unit}>
               <span className={styles.bigEmoji}>{stat.emojis}</span>

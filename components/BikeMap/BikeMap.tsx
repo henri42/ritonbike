@@ -15,7 +15,7 @@ import {
   PathOptions,
   FeatureGroup as LeafletFeatureGroup,
   LineUtil,
-  Point as LeafletPoint
+  Point as LeafletPoint,
 } from 'leaflet'
 
 import styled from 'styled-components'
@@ -46,34 +46,38 @@ const getMiddle = (points: Point[]) => {
   const left = points[leftIndex]
   const right = points[rightIndex]
 
-  const middle = [(left.lat + right.lat) / 2, (left.lng + right.lng) / 2] as LatLngTuple
+  const middle = [
+    (left.lat + right.lat) / 2,
+    (left.lng + right.lng) / 2,
+  ] as LatLngTuple
 
   return middle
 }
 
 const initialZoom = 7
 
-
 const routeColors = {
   bike: '#18d978',
   boat: '#318bff',
   train: '#E67E22',
-  car: '#ff2457'
+  car: '#ff2457',
+}
+
+const bikerUrl = {
+  bike: '/biker.gif',
+  boat: '/biker-boat.gif',
+  train: '/biker-train.gif',
+  car: '/biker-car.gif',
 }
 
 const routeSvgUrl = {
   bike: '',
   boat: '/sailboat-line.svg',
   train: '/train-line.svg',
-  car: '/car-line.svg'
+  car: '/car-line.svg',
 }
 
 const defaultColor = routeColors.bike
-
-const lastPointIcon = new Icon({
-  iconUrl: '/biker-green.gif',
-  iconAnchor: [-5, 17],
-})
 
 const routeOptions: PathOptions = {
   color: defaultColor,
@@ -169,7 +173,7 @@ const Checkpoint = ({ center, postId, color, children }: CheckpointProps) => {
   return (
     <CircleMarker
       center={center}
-      pathOptions={{...pathOptions, fillColor: color}}
+      pathOptions={{ ...pathOptions, fillColor: color }}
       radius={radius}
       eventHandlers={{
         mouseover: () => {
@@ -200,8 +204,14 @@ const MapContent = ({ posts }: MapContentProps) => {
   const map = useMap()
   const groupRef = useRef<LeafletFeatureGroup>(null)
 
-  const lastPostPoints = getPoints(posts[posts.length - 1])
+  const lastPost = posts[posts.length - 1]
+  const lastPostPoints = getPoints(lastPost)
   const lastPoint = lastPostPoints[lastPostPoints.length - 1]
+
+  const lastPointIcon = new Icon({
+    iconUrl: bikerUrl[lastPost.vehicle],
+    iconAnchor: [-5, 17],
+  })
 
   const handleZoomFit = () => {
     if (groupRef.current != null) {
@@ -229,17 +239,19 @@ const MapContent = ({ posts }: MapContentProps) => {
           const vehicleIcon = new Icon({
             iconUrl: routeSvgUrl[post.vehicle],
             iconAnchor: [8, 8],
-            className: styles.svgMarker
+            className: styles.svgMarker,
           })
-          
+
           return (
             <div key={post.id}>
               <Polyline
-                pathOptions={{...routeOptions, color}}
+                pathOptions={{ ...routeOptions, color }}
                 smoothFactor={4}
                 positions={points}
               />
-              {!isBike && <Marker position={getMiddle(post.points)} icon={vehicleIcon} />}
+              {!isBike && (
+                <Marker position={getMiddle(post.points)} icon={vehicleIcon} />
+              )}
               <Checkpoint center={points[0]} postId={post.id} color={color}>
                 <div
                   className={styles.markerContent}
@@ -249,11 +261,13 @@ const MapContent = ({ posts }: MapContentProps) => {
                     <Image src={post.coverImage} width={300} height={300} />
                   )}
                   <span className={styles.title}>{post.title}</span>
-                  {isBike && <Stats
-                    distance={post.distance}
-                    uphill={post.uphill}
-                    downhill={post.downhill}
-                  />}
+                  {isBike && (
+                    <Stats
+                      distance={post.distance}
+                      uphill={post.uphill}
+                      downhill={post.downhill}
+                    />
+                  )}
                 </div>
               </Checkpoint>
             </div>
@@ -278,10 +292,7 @@ const MapContent = ({ posts }: MapContentProps) => {
 
 const BikeMap = ({ posts }: BikeMapProps) => {
   return (
-    <MapContainer
-      className={styles.map}
-      zoom={initialZoom}
-    >
+    <MapContainer className={styles.map} zoom={initialZoom}>
       <MapContent posts={posts} />
     </MapContainer>
   )

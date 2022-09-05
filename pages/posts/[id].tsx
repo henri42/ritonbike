@@ -71,11 +71,13 @@ const Post = ({ postData, imageProps }: Props) => {
         )}
       </div>
       <h1>{postData.title}</h1>
-      {isBike && <Stats
-        distance={postData.distance}
-        uphill={postData.uphill}
-        downhill={postData.downhill}
-      />}
+      {isBike && (
+        <Stats
+          distance={postData.distance}
+          uphill={postData.uphill}
+          downhill={postData.downhill}
+        />
+      )}
       <p
         className={styles.content}
         dangerouslySetInnerHTML={{

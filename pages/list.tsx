@@ -27,7 +27,7 @@ const List = ({ posts }: Props) => {
     <Layout container>
       <div className={styles.root}>
         <div className={styles.topIcon}>
-          <Image src="/biker-green.gif" width={32} height={32} />
+          <Image src="/biker.gif" width={32} height={32} />
         </div>
         <div className={styles.list}>
           {posts.map((p, index) => (

@@ -53,7 +53,7 @@ const fetchPost = async (postId: number | string) => {
     downhill: post.downhill || 0,
     created: post.created,
     id: post.id,
-    vehicle: post.vehicle
+    vehicle: post.vehicle,
   }
   return postObject
 }
