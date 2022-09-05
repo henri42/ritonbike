@@ -41,7 +41,15 @@ const getPoints = (post: Post) => {
 }
 
 const initialZoom = 7
-const routeColor = '#1fe885'
+
+
+const routeColors = {
+  bike: '#18d978',
+  boat: '#318bff',
+  train: '#ff2457',
+  car: '#ff2457'
+}
+const defaultColor = routeColors.bike
 
 const lastPointIcon = new Icon({
   iconUrl: '/biker-green.gif',
@@ -49,7 +57,7 @@ const lastPointIcon = new Icon({
 })
 
 const routeOptions: PathOptions = {
-  color: routeColor,
+  color: defaultColor,
   dashArray: '2 6',
   weight: 4,
   fillOpacity: 1,
@@ -57,13 +65,13 @@ const routeOptions: PathOptions = {
 
 const markerMobileOptions: PathOptions = {
   weight: 30,
-  fillColor: routeColor,
+  fillColor: defaultColor,
   fillOpacity: 1,
   opacity: 0,
 }
 
 const markerDesktopOptions: PathOptions = {
-  fillColor: routeColor,
+  fillColor: defaultColor,
   fillOpacity: 1,
   opacity: 0,
 }
@@ -80,6 +88,7 @@ type BikeMapProps = {
 type CheckpointProps = {
   center: LatLngTuple
   postId: number
+  color: string
   children: ReactNode
 }
 
@@ -132,15 +141,17 @@ const StyledTooltip = styled(Tooltip)`
   }
 `
 
-const Checkpoint = ({ center, postId, children }: CheckpointProps) => {
+const Checkpoint = ({ center, postId, color, children }: CheckpointProps) => {
   const router = useRouter()
   const isDesktop = useMediaQuery({ query: '(min-width: 1224px)' })
   const [radius, setRadius] = useState(6)
 
+  const pathOptions = isDesktop ? markerDesktopOptions : markerMobileOptions
+
   return (
     <CircleMarker
       center={center}
-      pathOptions={isDesktop ? markerDesktopOptions : markerMobileOptions}
+      pathOptions={{...pathOptions, fillColor: color}}
       radius={radius}
       eventHandlers={{
         mouseover: () => {
@@ -191,14 +202,15 @@ const MapContent = ({ posts, lastPoint }: MapContentProps) => {
         {posts.map((post) => {
           const points = getPoints(post)
           const isImagePresent = post.coverImage !== ''
+          const color = routeColors[post.vehicle]
           return (
             <div key={post.id}>
               <Polyline
-                pathOptions={routeOptions}
+                pathOptions={{...routeOptions, color}}
                 smoothFactor={4}
                 positions={points}
               />
-              <Checkpoint center={points[0]} postId={post.id}>
+              <Checkpoint center={points[0]} postId={post.id} color={color}>
                 <div
                   className={styles.markerContent}
                   onClick={() => router.push('/posts/' + post.id.toString())}

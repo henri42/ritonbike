@@ -11,6 +11,7 @@ export type Post = {
   created: string
   id: number
   title: string
+  vehicle: 'bike' | 'boat' | 'car' | 'train'
   points: Point[]
   distance: number
   uphill: number
