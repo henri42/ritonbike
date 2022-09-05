@@ -43,14 +43,12 @@ const getMiddle = (points: Point[]) => {
   const leftIndex = Math.floor(points.length / 2)
   const rightIndex = leftIndex + 1
 
-  const left = points[0]
-  const right = points[points.length -1 ]
+  const left = points[leftIndex]
+  const right = points[rightIndex]
 
-  const birdFlightMiddle = new LeafletPoint((left.lat + right.lat) / 2, (left.lng + right.lng) / 2)
+  const middle = [(left.lat + right.lat) / 2, (left.lng + right.lng) / 2] as LatLngTuple
 
-  const middle = LineUtil.closestPointOnSegment(birdFlightMiddle, new LeafletPoint(left.lat, left.lng), new LeafletPoint(right.lat, right.lng))
-
-  return [middle.x, middle.y] as LatLngTuple
+  return middle
 }
 
 const initialZoom = 7
@@ -230,7 +228,7 @@ const MapContent = ({ posts }: MapContentProps) => {
 
           const vehicleIcon = new Icon({
             iconUrl: routeSvgUrl[post.vehicle],
-            iconAnchor: [12, 12],
+            iconAnchor: [8, 8],
             className: styles.svgMarker
           })
           
@@ -251,11 +249,11 @@ const MapContent = ({ posts }: MapContentProps) => {
                     <Image src={post.coverImage} width={300} height={300} />
                   )}
                   <span className={styles.title}>{post.title}</span>
-                  <Stats
+                  {isBike && <Stats
                     distance={post.distance}
                     uphill={post.uphill}
                     downhill={post.downhill}
-                  />
+                  />}
                 </div>
               </Checkpoint>
             </div>

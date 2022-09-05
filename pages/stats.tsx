@@ -10,8 +10,8 @@ import { Post, Stat } from '../types/post'
 export const getStaticProps: GetStaticProps = async () => {
   const stats = await fetchAllStats()
   const posts = await fetchAllPosts()
-  const totalUphill = posts.map(post => post.uphill).reduce((acc, current) => acc + current, 0)
-  const totalDistanceMeters = posts.map(post => post.distance).reduce((acc, current) => acc + current, 0)
+  const totalUphill = posts.filter(post => post.vehicle === 'bike').map(post => post.uphill).reduce((acc, current) => acc + current, 0)
+  const totalDistanceMeters = posts.filter(post => post.vehicle === 'bike').map(post => post.distance).reduce((acc, current) => acc + current, 0)
   const totalDistance = (totalDistanceMeters / 1000).toFixed(0)
   return {
     props: {

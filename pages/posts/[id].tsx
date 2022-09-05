@@ -56,6 +56,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 const Post = ({ postData, imageProps }: Props) => {
   const isImagePresent = postData.coverImage !== ''
+  const isBike = postData.vehicle === 'bike'
   return (
     <Layout container subtitle={postData.title}>
       <div className={styles.imageContainer}>
@@ -70,11 +71,11 @@ const Post = ({ postData, imageProps }: Props) => {
         )}
       </div>
       <h1>{postData.title}</h1>
-      <Stats
+      {isBike && <Stats
         distance={postData.distance}
         uphill={postData.uphill}
         downhill={postData.downhill}
-      />
+      />}
       <p
         className={styles.content}
         dangerouslySetInnerHTML={{
