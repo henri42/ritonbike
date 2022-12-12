@@ -64,10 +64,17 @@ const routeColors = {
 }
 
 const bikerUrl = {
-  bike: '/biker.gif',
-  boat: '/biker-boat.gif',
-  train: '/biker-train.gif',
-  car: '/biker-car.gif',
+  bike: 'icons/biker.gif',
+  boat: 'icons/biker-boat.gif',
+  train: 'icons/biker-train.gif',
+  car: 'icons/biker-car.gif',
+}
+
+const reverseBikerUrl = {
+  bike: 'icons/reverse-biker.gif',
+  boat: 'icons/reverse-biker-boat.gif',
+  train: 'icons/reverse-biker-train.gif',
+  car: 'icons/reverse-biker-car.gif',
 }
 
 const routeSvgUrl = {
@@ -206,11 +213,14 @@ const MapContent = ({ posts }: MapContentProps) => {
 
   const lastPost = posts[posts.length - 1]
   const lastPostPoints = getPoints(lastPost)
+
+  const firstPoint = lastPostPoints[0]
   const lastPoint = lastPostPoints[lastPostPoints.length - 1]
+  const reverse = (lastPoint[1] - firstPoint[1]) < 0
 
   const lastPointIcon = new Icon({
-    iconUrl: bikerUrl[lastPost.vehicle],
-    iconAnchor: [-5, 17],
+    iconUrl: reverse ? reverseBikerUrl[lastPost.vehicle]: bikerUrl[lastPost.vehicle],
+    iconAnchor: reverse ? [32, 17] : [-5, 17],
   })
 
   const handleZoomFit = () => {
