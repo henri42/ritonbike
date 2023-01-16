@@ -14,8 +14,6 @@ import {
   LatLngTuple,
   PathOptions,
   FeatureGroup as LeafletFeatureGroup,
-  LineUtil,
-  Point as LeafletPoint,
 } from 'leaflet'
 
 import styled from 'styled-components'
@@ -55,11 +53,13 @@ const getMiddle = (points: Point[]) => {
 }
 
 const initialZoom = 7
+const isTripOver = true
 
 const routeColors = {
   bike: '#18d978',
   boat: '#318bff',
   train: '#E67E22',
+  plane: '#808080',
   car: '#ff2457',
 }
 
@@ -68,6 +68,7 @@ const bikerUrl = {
   boat: 'icons/biker-boat.gif',
   train: 'icons/biker-train.gif',
   car: 'icons/biker-car.gif',
+  plane: 'icons/biker.gif'
 }
 
 const reverseBikerUrl = {
@@ -75,13 +76,17 @@ const reverseBikerUrl = {
   boat: 'icons/reverse-biker-boat.gif',
   train: 'icons/reverse-biker-train.gif',
   car: 'icons/reverse-biker-car.gif',
+  plane: 'icons/reverse-biker.gif'
 }
+
+const finishFlagUrl = 'icons/flag.gif'
 
 const routeSvgUrl = {
   bike: '',
   boat: '/sailboat-line.svg',
   train: '/train-line.svg',
   car: '/car-line.svg',
+  plane: '/plane-line.svg'
 }
 
 const defaultColor = routeColors.bike
@@ -216,11 +221,15 @@ const MapContent = ({ posts }: MapContentProps) => {
 
   const firstPoint = lastPostPoints[0]
   const lastPoint = lastPostPoints[lastPostPoints.length - 1]
-  const reverse = (lastPoint[1] - firstPoint[1]) < 0
+  const isReverse = (lastPoint[1] - firstPoint[1]) < 0
+
+  let iconUrl = bikerUrl[lastPost.vehicle]
+  if (isTripOver) iconUrl = finishFlagUrl
+  else if (isReverse) iconUrl = reverseBikerUrl[lastPost.vehicle]
 
   const lastPointIcon = new Icon({
-    iconUrl: reverse ? reverseBikerUrl[lastPost.vehicle]: bikerUrl[lastPost.vehicle],
-    iconAnchor: reverse ? [32, 17] : [-5, 17],
+    iconUrl,
+    iconAnchor: isReverse && !isTripOver ? [32, 17] : [-5, 17],
   })
 
   const handleZoomFit = () => {
